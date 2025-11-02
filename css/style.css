@@ -1,0 +1,41 @@
+/* css/style.css */
+
+body {
+    padding-bottom: 100px; 
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.player-bar {
+    z-index: 1020;
+    min-height: 90px;
+}
+
+.card:hover {
+    background-color: #333 !important;
+    cursor: pointer;
+}
+
+/* === INI BAGIAN PENTING UNTUK RESPONSIVE === */
+
+.main-content {
+    /* Margin bawah ini berlaku di SEMUA ukuran layar */
+    margin-bottom: 100px;
+    /* Secara default (di HP), margin kiri adalah 0 */
+    margin-left: 0;
+}
+
+/* Media Query: Terapkan CSS di dalam ini HANYA JIKA
+  lebar layar 768px (breakpoint 'md' Bootstrap) atau LEBIH BESAR.
+*/
+@media (min-width: 768px) {
+    .main-content {
+        /* Margin kiri HANYA akan ada di layar desktop/tablet */
+        margin-left: 16.66%; 
+    }
+}
