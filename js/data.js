@@ -1,30 +1,53 @@
-// js/data.js
+// js/data.js (VERSI FINAL YANG BENAR)
 
-// Ini adalah "database" lagu kita
-const allSongs = [
+export const allSongs = [
   {
     id: 1,
-    title: "tahu bulat", // Ganti dengan judul aslinya
-    artist: "abid tahu", // Ganti dengan artis aslinya
-    album: "Album Keren",
-    url: "music/lagu1.mp3", // PASTIKAN NAMA FILE INI BENAR
-    cover: "images/gambar1.png" // PASTIKAN NAMA FILE INI BENAR
+    title: "MIDNIGHT BY NANTEKI",
+    artist: "Nanteki",
+    album: "Brazilian Phonk",
+    url: "music/MIDNIGHT.mp3",
+    cover: "images/undefined.jpg"
   },
   {
     id: 2,
-    title: "roti bakar", // Ganti
-    artist: "aryo", // Ganti
-    album: "Album Hits",
-    url: "music/lagu2.mp3", // PASTIKAN BENAR
-    cover: "images/gambar2.png" // PASTIKAN BENAR
+    title: "MURDER IN MY MIND BY KORDHELL",
+    artist: "Kordhell",
+    album: "Brazilian phonk",
+    url: "music/MUDERINMYMIND.mp3",
+    cover: "images/undefined(1).jpg"
   },
   {
     id: 3,
-    title: "Lagu Tes Ketiga", // Ganti
-    artist: "Artis C", // Ganti
+    title: "DNA BY VISXGE",
+    artist: "Visxge",
     album: "Single",
-    url: "music/lagu1.mp3", // Boleh pakai file mp3 yang sama untuk tes
-    cover: "images/cover1.jpg" // Boleh pakai cover yang sama untuk tes
+    url: "music/DNA.mp3",
+    cover: "images/undefined(2).jpg"
   },
-  // Kamu bisa tambahkan sebanyak yang kamu mau
+  {
+    id: 4,
+    title: "ANDROMEDA - MONTAGEM",
+    artist: "Andromeda",
+    album: "Single",
+    url: "music/MONTAGEM.mp3",
+    cover: "images/cover3.jpg"
+  },
+  {
+    id: 5,
+    title: "LAND OF FIRE - KORDHELL",
+    artist: "Kordhell",
+    album: "Single",
+    url: "music/LAND OF FIRE.mp3", // Hati-hati dengan spasi di nama file
+    cover: "images/cover4.jpg"
+  },
+  {
+    id: 6,
+    title: "BEST PHONK 2025",
+    artist: "1Hr",
+    album: "Single",
+    url: "music/THEBESTPHONKPLAYLIST2025.mp3",
+    cover: "images/undefined(3).jpg"
+  }
+  // Tidak ada koma (,) setelah lagu terakhir
 ];
