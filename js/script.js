@@ -1,7 +1,7 @@
-// js/script.js - FINAL FULL VERSION
+// js/script.js - FINAL VERSION (Mobile Sync Fix)
 
 document.addEventListener("DOMContentLoaded", () => {
-  // === 1. ELEMEN DOM ===
+  // === 1. ELEMEN DOM UTAMA ===
   const homeView = document.getElementById("home-view");
   const searchView = document.getElementById("search-view");
   const libraryView = document.getElementById("library-view");
@@ -26,35 +26,34 @@ document.addEventListener("DOMContentLoaded", () => {
   const detailPlayBtn = document.getElementById("detail-play-btn");
 
   const audioPlayer = document.getElementById("audio-player");
+  const modalList = document.getElementById("modal-playlist-list");
+  const createPlaylistBtn = document.getElementById("create-playlist-btn");
+
+  // === 2. PLAYER ELEMENTS (DESKTOP & MOBILE) ===
+  
+  // Desktop
   const playerTitle = document.getElementById("player-title");
   const playerArtist = document.getElementById("player-artist");
   const playerCover = document.getElementById("player-cover");
-  
-  // Ambil semua ID kontrol (Desktop dan Mobile)
-  const mainPlayPauseBtn = document.getElementById("main-play-pause-btn"); 
-  const mainPlayPauseBtnMobile = document.getElementById("main-play-pause-btn-mobile"); 
-  
-  const playerLikeBtn = document.getElementById("player-like-btn"); 
-  const playerLikeBtnMobile = document.getElementById("player-like-btn-mobile"); 
-
-  const prevBtn = document.getElementById("prev-song-btn"); 
-  const prevBtnMobile = document.getElementById("prev-song-btn-mobile"); 
-  
-  const nextBtn = document.getElementById("next-song-btn"); 
-  const nextBtnMobile = document.getElementById("next-song-btn-mobile"); 
-
-  const shuffleBtn = document.getElementById("shuffle-btn");
-  const repeatBtn = document.getElementById("repeat-btn");
+  const mainPlayPauseBtn = document.getElementById("main-play-pause-btn");
+  const playerLikeBtn = document.getElementById("player-like-btn");
+  const prevBtn = document.getElementById("prev-song-btn");
+  const nextBtn = document.getElementById("next-song-btn");
+  const progressBar = document.getElementById("progress-bar"); // Desktop Bar
   const progressContainer = document.getElementById("progress-container");
-  const progressBar = document.getElementById("progress-bar");
   const currTime = document.getElementById("current-time");
   const totDur = document.getElementById("total-duration");
   const volControl = document.getElementById("volume-control");
-  const createPlaylistBtn = document.getElementById("create-playlist-btn");
 
-  const modalList = document.getElementById("modal-playlist-list");
-  
-  // === 2. DATA STATE ===
+  // Mobile
+  const playerTitleMobile = document.getElementById("player-title-mobile");
+  const playerArtistMobile = document.getElementById("player-artist-mobile");
+  const playerCoverMobile = document.getElementById("player-cover-mobile");
+  const mainPlayPauseBtnMobile = document.getElementById("main-play-pause-btn-mobile");
+  const playerLikeBtnMobile = document.getElementById("player-like-btn-mobile");
+  const progressBarMobile = document.getElementById("progress-bar-mobile"); // Mobile Bar (Top Thin Line)
+
+  // === 3. DATA STATE ===
   let currentSong = null;
   let currentSongIndex = 0;
   let currentPlaylist = allSongs; 
@@ -68,9 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
   let selectedCoverUrl = localCovers[0];
 
-  // === 3. HELPER FUNCTIONS (CARD CREATORS) ===
+  // === 4. HELPER FUNCTIONS (CARD CREATORS) ===
 
-  // A. Create Song Card (Kotak Standar)
   function createSongCard(song, showAddBtn = true) {
     const isFav = favorites.includes(song.id);
     return `
@@ -102,7 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // B. Create Artist Card (Bulat)
   function createArtistCard(artist) {
     return `
       <div class="col-xl-2 col-lg-3 col-md-4 col-6 mb-4">
@@ -122,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // C. Create Genre Card (Kotak Warna)
   function createGenreCard(genreObj) {
     const colors = ['#E13300', '#7358FF', '#1E3264', '#E8115B', '#148A08', '#BC5900', '#503750', '#0D72EA'];
     const colorIndex = genreObj.name.length % colors.length; 
@@ -137,23 +133,19 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // === 4. RENDER FUNCTIONS (HOME SECTIONS) ===
+  // === 5. RENDER FUNCTIONS ===
 
   function renderHome() {
     songListContainer.innerHTML = ""; 
-
-    // Section 1: Good Evening (Top 4 Songs)
     const topPicks = allSongs.slice(0, 4); 
     renderSection("Good Evening", topPicks, 'song');
 
-    // Section 2: Browse by Genre (Categories)
     const uniqueGenres = [...new Set(allSongs.map(s => s.genre || "Unknown"))];
     const genreData = uniqueGenres.map(g => ({ name: g }));
     if(genreData.length > 0) {
         renderSection("Browse by Genre", genreData, 'genre');
     }
 
-    // Section 3: Popular Artists
     const uniqueArtists = [...new Set(allSongs.map(song => song.artist))];
     const artistData = uniqueArtists.map(artistName => {
         const song = allSongs.find(s => s.artist === artistName);
@@ -182,7 +174,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const likedCount = favorites.length;
     const cardSizeClass = "col-xl-2 col-lg-3 col-md-4 col-6 mb-4"; 
 
-    // Liked Songs Card
     libraryGridContainer.innerHTML += `
         <div class="${cardSizeClass}">
             <div class="liked-songs-card" onclick="openLikedSongs()">
@@ -196,7 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
     `;
 
-    // User Playlists
     myPlaylists.forEach(pl => {
         const coverSrc = pl.cover ? pl.cover : "https://placehold.co/300x300/333/fff?text=PL";
         libraryGridContainer.innerHTML += `
@@ -216,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === 5. LOGIKA DETAIL (PLAYLIST, ARTIST, GENRE) ===
+  // === 6. LOGIKA DETAIL ===
 
   window.openLikedSongs = function() {
       showView('playlist-detail');
@@ -252,10 +242,8 @@ document.addEventListener("DOMContentLoaded", () => {
       showView('playlist-detail');
       detailTitle.innerText = genreName;
       detailDesc.innerText = `Top ${genreName} Songs`;
-      
       const firstSong = allSongs.find(s => (s.genre || "Unknown") === genreName);
       detailCover.src = firstSong ? firstSong.cover : "https://placehold.co/300x300";
-
       const genreSongs = allSongs.filter(s => (s.genre || "Unknown") === genreName);
       renderDetailList(genreSongs);
   };
@@ -272,26 +260,34 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   }
 
-  // === 6. PLAYER CORE (FIXED ID MAPPING) ===
+  // === 7. PLAYER CORE (SYNC MOBILE & DESKTOP) ===
   
-  // Fungsi utama untuk toggle play/pause
   function togglePlayPause() {
     if (!currentSong) return;
-    const isPaused = audioPlayer.paused;
-    if (isPaused) {
+    if (audioPlayer.paused) {
         audioPlayer.play();
     } else {
         audioPlayer.pause();
     }
-    
-    // Perbarui ikon untuk KEDUA tombol (Desktop dan Mobile)
-    const iconHtml = isPaused 
-        ? '<i class="bi bi-pause-circle-fill"></i>' 
-        : '<i class="bi bi-play-circle-fill"></i>';
+    updatePlayBtnState();
+  }
 
-    if (mainPlayPauseBtn) mainPlayPauseBtn.innerHTML = iconHtml;
-    if (mainPlayPauseBtnMobile) mainPlayPauseBtnMobile.innerHTML = iconHtml;
-
+  function updatePlayBtnState() {
+      const isPaused = audioPlayer.paused;
+      
+      // Desktop Icon (Circle)
+      if (mainPlayPauseBtn) {
+          mainPlayPauseBtn.innerHTML = isPaused 
+            ? '<i class="bi bi-play-circle-fill"></i>' 
+            : '<i class="bi bi-pause-circle-fill"></i>';
+      }
+      
+      // Mobile Icon (Plain Fill)
+      if (mainPlayPauseBtnMobile) {
+          mainPlayPauseBtnMobile.innerHTML = isPaused 
+            ? '<i class="bi bi-play-fill fs-1"></i>' 
+            : '<i class="bi bi-pause-fill fs-1"></i>';
+      }
   }
 
   window.playSpecificSong = function(id) {
@@ -314,25 +310,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updatePlayerUI() {
       if(!currentSong) return;
-      if(playerTitle) playerTitle.innerText = currentSong.title;
-      if(playerArtist) playerArtist.innerText = currentSong.artist;
-      if(playerCover) playerCover.src = currentSong.cover;
       
-      // Update semua tombol play/pause ke ikon pause
-      const iconHtml = '<i class="bi bi-pause-circle-fill"></i>';
-      if (mainPlayPauseBtn) mainPlayPauseBtn.innerHTML = iconHtml;
-      if (mainPlayPauseBtnMobile) mainPlayPauseBtnMobile.innerHTML = iconHtml;
+      // Update Desktop
+      if (playerTitle) playerTitle.innerText = currentSong.title;
+      if (playerArtist) playerArtist.innerText = currentSong.artist;
+      if (playerCover) playerCover.src = currentSong.cover;
       
+      // Update Mobile
+      if (playerTitleMobile) playerTitleMobile.innerText = currentSong.title;
+      if (playerArtistMobile) playerArtistMobile.innerText = currentSong.artist;
+      if (playerCoverMobile) playerCoverMobile.src = currentSong.cover;
+
+      updatePlayBtnState();
       updateLikeBtnState();
   }
 
   function updateLikeBtnState() {
       if(!currentSong) return;
       const isFav = favorites.includes(currentSong.id);
-      const iconHtml = `<i class="bi ${isFav ? 'bi-heart-fill text-success' : 'bi-heart'}"></i>`;
+      const iconClass = isFav ? 'bi-heart-fill text-success' : 'bi-heart';
+      const htmlDesktop = `<i class="bi ${iconClass}"></i>`;
+      const htmlMobile = `<i class="bi ${iconClass} fs-5"></i>`;
       
-      if(playerLikeBtn) playerLikeBtn.innerHTML = iconHtml;
-      if(playerLikeBtnMobile) playerLikeBtnMobile.innerHTML = iconHtml;
+      if(playerLikeBtn) playerLikeBtn.innerHTML = htmlDesktop;
+      if(playerLikeBtnMobile) playerLikeBtnMobile.innerHTML = htmlMobile;
   }
 
   window.toggleFavorite = function(id) {
@@ -345,7 +346,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if(currentSong && currentSong.id === id) updateLikeBtnState();
   };
   
-  // FUNGSI NEXT/PREV (Gunakan fungsi yang sama untuk mobile dan desktop)
   function playNextSong() {
     if(!currentPlaylist || currentPlaylist.length === 0) return;
     currentSongIndex = (currentSongIndex + 1) % currentPlaylist.length;
@@ -358,7 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
     playSongObj(currentPlaylist[currentSongIndex]);
   }
 
-  // --- AUDIO & UI LISTENERS ---
+  // --- LISTENERS ---
   
   if (mainPlayPauseBtn) mainPlayPauseBtn.addEventListener('click', togglePlayPause);
   if (mainPlayPauseBtnMobile) mainPlayPauseBtnMobile.addEventListener('click', togglePlayPause);
@@ -367,15 +367,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if (playerLikeBtnMobile) playerLikeBtnMobile.addEventListener('click', () => { if(currentSong) toggleFavorite(currentSong.id); });
 
   if (nextBtn) nextBtn.addEventListener('click', playNextSong);
-  if (nextBtnMobile) nextBtnMobile.addEventListener('click', playNextSong);
-
+  
   if (prevBtn) prevBtn.addEventListener('click', playPrevSong);
-  if (prevBtnMobile) prevBtnMobile.addEventListener('click', playPrevSong);
-
 
   audioPlayer.addEventListener('timeupdate', () => {
       if(audioPlayer.duration) {
-          if(progressBar) progressBar.style.width = `${(audioPlayer.currentTime / audioPlayer.duration) * 100}%`;
+          const pct = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+          if(progressBar) progressBar.style.width = `${pct}%`;
+          if(progressBarMobile) progressBarMobile.style.width = `${pct}%`; // Update Mobile Bar
           if(currTime) currTime.innerText = formatTime(audioPlayer.currentTime);
           if(totDur) totDur.innerText = formatTime(audioPlayer.duration);
       }
@@ -431,14 +430,71 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Modal Logic
+  if(createPlaylistBtn) {
+      createPlaylistBtn.addEventListener('click', () => {
+        document.getElementById('new-playlist-name').value = "";
+        const container = document.getElementById('cover-selection-container');
+        container.innerHTML = "";
+        localCovers.forEach((url, index) => {
+            const img = document.createElement('img');
+            img.src = url; img.className = 'cover-option' + (index === 0 ? ' selected' : '');
+            if(index === 0) selectedCoverUrl = url;
+            img.onclick = () => {
+                document.querySelectorAll('.cover-option').forEach(el => el.classList.remove('selected'));
+                img.classList.add('selected'); selectedCoverUrl = url;
+            };
+            container.appendChild(img);
+        });
+        new bootstrap.Modal(document.getElementById('createPlaylistModal')).show();
+      });
+  }
+
+  document.getElementById('save-new-playlist-btn')?.addEventListener('click', () => {
+      const name = document.getElementById('new-playlist-name').value.trim() || `My Playlist #${myPlaylists.length + 1}`;
+      myPlaylists.push({ id: Date.now(), name, cover: selectedCoverUrl, songs: [] });
+      localStorage.setItem("myPlaylists", JSON.stringify(myPlaylists));
+      if(document.getElementById('library-view').style.display !== 'none') renderLibrary();
+      bootstrap.Modal.getInstance(document.getElementById('createPlaylistModal')).hide();
+  });
+
+  window.openAddToModal = function(id) {
+      songIdToAdd = id;
+      modalList.innerHTML = "";
+      if (myPlaylists.length === 0) {
+          modalList.innerHTML = "<p class='text-center text-secondary'>No playlists created yet.</p>";
+      } else {
+          myPlaylists.forEach(pl => {
+              const item = document.createElement("div");
+              item.className = "playlist-item d-flex align-items-center gap-3 mb-2 p-2 rounded";
+              item.style.cursor = "pointer";
+              item.innerHTML = `
+                <div class="bg-secondary d-flex align-items-center justify-content-center rounded" style="width:40px; height:40px; overflow:hidden;">
+                   <img src="${pl.cover}" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div><h6 class="mb-0 text-white">${pl.name}</h6></div>`;
+              item.onclick = () => saveSongToPlaylist(pl.id);
+              modalList.appendChild(item);
+          });
+      }
+      new bootstrap.Modal(document.getElementById('addToPlaylistModal')).show();
+  };
+
+  function saveSongToPlaylist(playlistId) {
+      const playlist = myPlaylists.find(p => p.id === playlistId);
+      if(playlist && !playlist.songs.includes(songIdToAdd)) {
+          playlist.songs.push(songIdToAdd);
+          localStorage.setItem("myPlaylists", JSON.stringify(myPlaylists));
+          alert(`Added to ${playlist.name}`);
+      } else { alert("Song already in playlist!"); }
+      bootstrap.Modal.getInstance(document.getElementById('addToPlaylistModal')).hide();
+  }
+
   renderHome();
   if(allSongs.length > 0) {
       currentSong = allSongs[0]; currentPlaylist = allSongs;
-      if(playerTitle) playerTitle.innerText = currentSong.title;
-      if(playerArtist) playerArtist.innerText = currentSong.artist;
-      if(playerCover) playerCover.src = currentSong.cover;
+      updatePlayerUI();
       audioPlayer.src = currentSong.url;
-      updateLikeBtnState();
       audioPlayer.addEventListener('loadedmetadata', () => { if(totDur) totDur.innerText = formatTime(audioPlayer.duration); });
   }
 });
