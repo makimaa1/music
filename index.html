@@ -17,12 +17,9 @@
   </head>
   <body class="bg-black text-white">
     
-    <nav class="navbar navbar-dark bg-black d-md-none fixed-top border-bottom border-secondary" style="z-index: 1050;">
+    <nav class="navbar navbar-dark bg-black d-md-none fixed-top" style="z-index: 1050; background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);">
       <div class="container-fluid">
-        <span class="navbar-brand fw-bold">My Player</span>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebarMenu">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <span class="navbar-brand fw-bold">My Music</span>
       </div>
     </nav>
 
@@ -31,7 +28,7 @@
         
         <nav class="col-md-2 d-none d-md-block bg-black sidebar-desktop">
           <div class="p-3">
-             <h5 class="text-white fw-bold px-3 mb-4"><i class="bi bi-spotify me-2"></i>My Player</h5>
+             <h5 class="text-white fw-bold px-3 mb-4"><i class="bi bi-spotify me-2"></i>My Music</h5>
              <ul class="nav flex-column gap-2">
               <li class="nav-item"><a class="nav-link active" href="#" id="home-link-desktop"><i class="bi bi-house-door-fill"></i> Home</a></li>
               <li class="nav-item"><a class="nav-link" href="#" id="search-link-desktop"><i class="bi bi-search"></i> Search</a></li>
@@ -40,20 +37,6 @@
           </div>
           <div class="px-4"><hr class="text-secondary"></div>
         </nav>
-
-        <div class="offcanvas offcanvas-start bg-black text-white d-md-none" tabindex="-1" id="mobileSidebarMenu" style="z-index: 1060;">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title fw-bold">Menu</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-          </div>
-          <div class="offcanvas-body p-0">
-            <ul class="nav flex-column">
-              <li class="nav-item"><a class="nav-link text-white p-3" href="#" id="home-link-mobile" data-bs-dismiss="offcanvas"><i class="bi bi-house-door-fill me-3"></i> Home</a></li>
-              <li class="nav-item"><a class="nav-link text-white p-3" href="#" id="search-link-mobile" data-bs-dismiss="offcanvas"><i class="bi bi-search me-3"></i> Search</a></li>
-              <li class="nav-item"><a class="nav-link text-white p-3" href="#" id="library-link-mobile" data-bs-dismiss="offcanvas"><i class="bi bi-collection-fill me-3"></i> Your Library</a></li>
-            </ul>
-          </div>
-        </div>
 
         <main class="col-md-10 main-content">
           <div id="home-view">
@@ -85,12 +68,25 @@
 
           <div id="playlist-detail-view" style="display: none">
               <div class="d-flex flex-column flex-md-row align-items-md-end gap-4 mb-4 p-4 rounded" style="background: linear-gradient(transparent 0%, rgba(0,0,0,0.8) 100%);">
-                  <img src="" id="detail-cover" style="width: 200px; height: 200px; box-shadow: 0 4px 60px rgba(0,0,0,.5); object-fit: cover;" class="rounded flex-shrink-0 mx-auto mx-md-0 d-block">
-                  <div class="text-center text-md-start">
+                  <img src="" id="detail-cover" style="width: 220px; height: 220px; box-shadow: 0 4px 60px rgba(0,0,0,.5); object-fit: cover;" class="rounded flex-shrink-0 mx-auto mx-md-0 d-block">
+                  <div class="text-center text-md-start w-100">
                       <small class="text-uppercase fw-bold text-white-50">Playlist / Collection</small>
-                      <h1 class="display-4 fw-bold my-2" id="detail-title">Title</h1>
+                      <h1 class="display-4 fw-bold my-2 text-truncate" id="detail-title" style="max-height: 120px;">Title</h1>
                       <p class="text-white-50" id="detail-desc">Description</p>
-                      <button class="btn btn-success rounded-circle p-3 fs-3 mt-2 scale-hover" id="detail-play-btn"><i class="bi bi-play-fill"></i></button>
+                      
+                      <div class="d-flex align-items-center gap-3 mt-3 justify-content-center justify-content-md-start">
+                          <button class="btn btn-success rounded-circle d-flex align-items-center justify-content-center scale-hover" style="width: 56px; height: 56px; background-color: #1db954; border: none;" id="detail-play-btn">
+                              <i class="bi bi-play-fill fs-2 text-black ms-1"></i>
+                          </button>
+                          
+                          <button class="btn btn-transparent text-secondary fs-2 scale-hover" id="detail-shuffle-btn">
+                              <i class="bi bi-shuffle"></i>
+                          </button>
+
+                          <button class="btn btn-transparent text-secondary fs-2 scale-hover">
+                              <i class="bi bi-heart"></i>
+                          </button>
+                      </div>
                   </div>
               </div>
               <div class="row px-2" id="detail-song-list"></div>
@@ -99,39 +95,60 @@
       </div>
     </div>
 
-    <footer class="d-md-none fixed-bottom bg-black" style="border-top: 1px solid #333; padding-bottom: env(safe-area-inset-bottom);">
-        <div class="progress" style="height: 2px; border-radius: 0; background-color: #333;">
-            <div class="progress-bar bg-white" role="progressbar" style="width: 0%" id="progress-bar-mobile"></div>
-        </div>
-        
-        <div class="d-flex align-items-center justify-content-between p-2" style="height: 60px;">
-            <div class="d-flex align-items-center overflow-hidden me-2" style="flex: 1;">
-                <img src="images/cover1.jpg" id="player-cover-mobile" class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;" onerror="this.src='https://placehold.co/40x40/333/fff?text=M'">
+    <nav class="d-md-none fixed-bottom bg-black d-flex justify-content-around align-items-center py-2 border-top border-secondary" style="z-index: 1060; height: 65px;">
+        <a href="#" class="nav-link text-white text-center active-nav-mobile" id="home-link-mobile">
+            <i class="bi bi-house-door-fill fs-4 d-block"></i>
+            <span style="font-size: 10px;">Home</span>
+        </a>
+        <a href="#" class="nav-link text-secondary text-center" id="search-link-mobile">
+            <i class="bi bi-search fs-4 d-block"></i>
+            <span style="font-size: 10px;">Search</span>
+        </a>
+        <a href="#" class="nav-link text-secondary text-center" id="library-link-mobile">
+            <i class="bi bi-collection-fill fs-4 d-block"></i>
+            <span style="font-size: 10px;">Library</span>
+        </a>
+    </nav>
+
+    <div class="d-md-none fixed-bottom px-2" style="bottom: 70px; z-index: 1055;">
+        <div class="bg-dark rounded p-2 d-flex align-items-center justify-content-between" style="background-color: #282828 !important; border-bottom: 2px solid #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+            
+            <div class="d-flex align-items-center overflow-hidden me-1" style="flex: 1; cursor: pointer;" onclick="openDetail('playlist', state.currentSong.id)">
+                <img src="images/cover1.jpg" id="player-cover-mobile" class="rounded me-2" style="width: 38px; height: 38px; object-fit: cover;" onerror="this.src='https://placehold.co/40x40/333/fff?text=M'">
                 <div class="d-flex flex-column justify-content-center overflow-hidden">
-                    <h6 class="mb-0 text-white text-truncate fw-bold" id="player-title-mobile" style="font-size: 0.85rem;">Pilih Lagu</h6>
-                    <small class="text-secondary text-truncate" id="player-artist-mobile" style="font-size: 0.7rem;">Artis</small>
+                    <h6 class="mb-0 text-white text-truncate fw-bold" id="player-title-mobile" style="font-size: 0.8rem;">Pilih Lagu</h6>
+                    <small class="text-secondary text-truncate" id="player-artist-mobile" style="font-size: 0.65rem;">Artis</small>
                 </div>
             </div>
 
-            <div class="d-flex align-items-center gap-3 flex-shrink-0">
+            <div class="d-flex align-items-center gap-2 flex-shrink-0">
                 <button class="btn btn-link text-secondary p-0" id="player-like-btn-mobile"><i class="bi bi-heart fs-5"></i></button>
+                
+                <button class="btn btn-link text-white p-0" id="prev-song-btn-mobile"><i class="bi bi-skip-backward-fill fs-4"></i></button>
+                
                 <button class="btn btn-link text-white p-0" id="main-play-pause-btn-mobile"><i class="bi bi-play-fill fs-1"></i></button>
+                
+                <button class="btn btn-link text-white p-0" id="next-song-btn-mobile"><i class="bi bi-skip-forward-fill fs-4"></i></button>
             </div>
         </div>
-    </footer>
+        <div class="progress" style="height: 2px; border-radius: 0; position: absolute; bottom: 2px; left: 10px; right: 10px;">
+             <div class="progress-bar bg-spotify-green" role="progressbar" style="width: 0%" id="progress-bar-mobile"></div>
+        </div>
+    </div>
 
-    <footer class="d-none d-md-block fixed-bottom bg-black p-2 border-top border-secondary" style="height: 90px;">
+    <footer class="d-none d-md-block fixed-bottom bg-black p-2 border-top border-secondary" style="height: 90px; z-index: 2000;">
         <div class="row align-items-center h-100 m-0">
             <div class="col-3 ps-0">
                 <div class="d-flex align-items-center">
                     <img src="images/cover1.jpg" id="player-cover" class="me-3 rounded" style="width: 56px; height: 56px; object-fit: cover;" onerror="this.src='https://placehold.co/56x56/333/fff?text=M'">
                     <div class="overflow-hidden">
-                        <h6 class="mb-0 text-white text-truncate" id="player-title">Pilih Lagu</h6>
-                        <small class="text-secondary text-truncate" id="player-artist">Artis</small>
+                        <h6 class="mb-0 text-white text-truncate pointer-hover hover-underline" id="player-title">Pilih Lagu</h6>
+                        <small class="text-secondary text-truncate hover-white pointer-hover" id="player-artist">Artis</small>
                     </div>
                     <button class="btn btn-link text-secondary hover-white ms-3" id="player-like-btn"><i class="bi bi-heart"></i></button>
                 </div>
             </div>
+            
             <div class="col-6 text-center">
                 <div class="d-flex justify-content-center align-items-center gap-3 mb-1">
                     <button class="btn btn-link text-secondary fs-5 p-0 hover-white" id="shuffle-btn"><i class="bi bi-shuffle"></i></button>
@@ -140,17 +157,16 @@
                     <button class="btn btn-link text-white fs-4 p-0 hover-white" id="next-song-btn"><i class="bi bi-skip-forward-fill"></i></button>
                     <button class="btn btn-link text-secondary fs-5 p-0 hover-white" id="repeat-btn"><i class="bi bi-arrow-repeat"></i></button>
                 </div>
-                <div class="d-flex align-items-center gap-2 w-100">
-                    <span id="current-time" class="small text-secondary" style="font-size: 11px;">0:00</span>
-                    <div class="progress flex-grow-1 bg-secondary bg-opacity-25" style="height: 4px; cursor: pointer" id="progress-container">
-                        <div class="progress-bar bg-white" role="progressbar" style="width: 0%" id="progress-bar"></div>
-                    </div>
-                    <span id="total-duration" class="small text-secondary" style="font-size: 11px;">0:00</span>
+                <div class="d-flex align-items-center gap-2 w-100 group-range">
+                    <span id="current-time" class="small text-secondary" style="font-size: 11px; min-width: 35px; text-align: right;">0:00</span>
+                    <input type="range" class="form-range music-range" min="0" value="0" step="0.1" id="progress-bar-slider">
+                    <span id="total-duration" class="small text-secondary" style="font-size: 11px; min-width: 35px;">0:00</span>
                 </div>
             </div>
+
             <div class="col-3 d-flex align-items-center justify-content-end">
                 <i class="bi bi-volume-up text-secondary me-2"></i>
-                <input type="range" class="form-range" min="0" max="1" step="0.01" value="1" style="width: 100px; height: 4px;" id="volume-control">
+                <input type="range" class="form-range music-range" min="0" max="1" step="0.01" value="1" style="width: 100px; height: 4px;" id="volume-control">
             </div>
         </div>
     </footer>
