@@ -22,9 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
         customAlbums: [
             { id: 101, name: "Phonk Drift King", artist: "Various Artists", cover: "images/phonk.jpg", songIds: [1, 2, 3, 4, 6] },
             { id: 102, name: "Galau Brutal 2025", artist: "Indo Pop Sad", cover: "images/galau.jpg", songIds: [15, 17, 18, 19, 21, 25] },
-            { id: 103, name: "Mahalini Special", artist: "Mahalini Raharja", cover: "images/cover3.jpg", songIds: [21, 22, 23, 24, 25] },
-            { id: 104, name: "International Hits", artist: "Mix", cover: "images/we cant be friend.jpg", songIds: [7, 8, 13] },
-            { id: 105, name: "Best of Idol", artist: "Lyodra, Tiara, Ziva", cover: "images/cover5.jpg", songIds: [11, 27, 28, 31, 32, 33] }
+            { id: 103, name: "Mahalini Special", artist: "Mahalini Raharja", cover: "images/mahalinis.jpg", songIds: [21, 22, 23, 24, 25] },
+            { id: 104, name: "International Hits", artist: "Mix", cover: "images/inter.jpg", songIds: [7, 8, 13] },
+            { id: 105, name: "Best of Idol", artist: "Lyodra, Tiara, Ziva", cover: "images/coverlyodra.jpg", songIds: [11, 27, 28, 31, 32, 33] }
         ],
 
         // === FITUR 2: FOTO ARTIS MANUAL ===
